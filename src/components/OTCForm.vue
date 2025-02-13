@@ -33,7 +33,17 @@
         />
       </div>
     </div>
-    <ButtonBase/>
+    <div class="mb-4">
+      <el-button
+          v-for="button in buttons"
+          :key="button.text"
+          :type="button.type"
+          text
+          bg
+      >
+        {{ button.text }}
+      </el-button>
+    </div>
 
   </ContentBase>
 </template>
@@ -41,12 +51,18 @@
 <script>
 import { UploadFilled } from '@element-plus/icons-vue'
 import ContentBase from './ContentBase.vue'
-import ButtonBase from './ButtonBase.vue'
 import {ref} from "vue";
 
 export default {
+  data() {
+    return {
+      buttons: [
+
+        { type: 'info', text: 'submit' },
+      ]
+    }
+  },
   components: {
-    ButtonBase,
     ContentBase,
     'upload-filled': UploadFilled
   },
@@ -68,6 +84,10 @@ export default {
 
 .demo-datetime-picker {
   margin-top: 10px;
+}
+
+.mb-4 {
+  margin-top: 15px;
 }
 
 

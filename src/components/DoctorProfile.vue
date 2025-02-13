@@ -8,7 +8,7 @@
       </template>
       <p :key="1" class="text item">{{doctor.id}}</p>
       <p :key="2" class="text item">{{doctor.name}}</p>
-      <p :key="3" class="text item">{{doctor.info}}</p>
+      <p :key="3" class="text item">{{doctor.address}}</p>
 
 
       <template #footer>Footer content</template>
@@ -28,8 +28,14 @@ import ContentBase from "./ContentBase.vue";
           type: Object,
           required: true,
         }
+      },
+
+      setup() {
+        console.log("from profile component");
       }
     }
+
+
 </script>
 
 <style scoped>

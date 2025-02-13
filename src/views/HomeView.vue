@@ -17,7 +17,9 @@
 
       <el-col :span="12" >
         <div class="grid-content ep-bg-purple" />
-        <div class="patientProfile"><PatientProfile/></div>
+        <div class="patientProfile">
+          <PatientProfile :patients="patients"/>
+        </div>
         <div class="otcForm">
           <OTCForm/>
         </div>
@@ -33,21 +35,50 @@ import DoctorProfile from "@/components/DoctorProfile.vue";
 import PatientProfile from "@/components/PatientProfile.vue";
 import OTCForm from "@/components/OTCForm.vue";
 import ImageShow from "@/components/ImageShow.vue";
-import {reactive} from "vue";
+import $ from "jquery";
+import {reactive, ref, toRaw} from "vue";
+
 
 export default {
   name: 'HomeView',
+
   components: {PatientProfile, DoctorProfile, OTCForm, ImageShow},
+
   setup() {
-    const info = "张文宏主要研究疑难感染性疾病与肝病的诊断与治疗，包括发热待查、疑难感染性疾病的病因诊断、疑难肝病的病因诊断、慢性病毒性肝炎的长期治疗与临床治愈，以及结核性脑膜炎与耐药结核等疑难结核病的诊治等"
     const doctor = reactive({
-      id: 1,
-      name: "张文宏",
-      info: info,
+      name: "",
+      id: "",
+      address: "",
+    })
+    // let user = ref({});
+    $.ajax({
+      url: 'http://localhost:8080/GetDoctor/1/',
+      type: 'GET',
+      success(res) {
+        doctor.name = res.name;
+        doctor.id = res.ID;
+        doctor.address = res.address;
+        console.log(toRaw(doctor));  // 使用 toRaw 打印原始对象
+      }
+
     });
+
+    const patients = ref([])
+
+    $.ajax({
+      url: 'http://localhost:8080/GetPatients/1/',
+      type: 'GET',
+      success(res) {
+        patients.value = res
+        console.log("父组件： " + JSON.stringify((patients.value)));  // 使用 toRaw 打印原始对象
+      }
+
+    });
+
 
     return {
       doctor,
+      patients
     }
   }
 }
