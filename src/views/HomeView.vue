@@ -7,11 +7,12 @@
           <el-col :span="12" ><div class="grid-content ep-bg-purple" />
             <ImageShow/>
           </el-col>
-
-          <el-col :span="12" ><div class="grid-content ep-bg-purple" />
+        </el-row>
+        <el-row :gutter="20">
+        <el-col :span="12" ><div class="grid-content ep-bg-purple" />
             <ImageShow/>
           </el-col>
-        </el-row>>
+        </el-row>
       </el-col>
 
 
