@@ -4,7 +4,7 @@
     <el-form :inline="true" :model="searchForm" class="demo-form-inline">
       <!-- 关键词输入 -->
       <el-form-item label="关键词">
-        <el-input v-model="searchForm.keyword" placeholder="请输入患者姓名"></el-input>
+        <el-input v-model="searchForm.patient_name" placeholder="请输入患者姓名"></el-input>
       </el-form-item>
 
       <!-- 性别选择 -->
@@ -28,18 +28,17 @@
       <!-- OCT图像状态选择 -->
       <el-form-item label="OCT图像">
         <el-select v-model="searchForm.octImage" placeholder="请选择OCT图像状态">
-          <el-option label="已上传" value="uploaded"></el-option>
-          <el-option label="未上传" value="not-uploaded"></el-option>
+          <el-option label="未上传" :value="0"></el-option>
+          <el-option label="已上传" :value="1"></el-option>
         </el-select>
       </el-form-item>
 
       <!-- 报告状态选择 -->
       <el-form-item label="报告状态">
         <el-select v-model="searchForm.reportStatus" placeholder="请选择报告状态">
-          <el-option label="未开始" value="not-started"></el-option>
-          <el-option label="生成中" value="generating"></el-option>
-          <el-option label="生成异常" value="error"></el-option>
-          <el-option label="待生成" value="pending"></el-option>
+          <el-option label="未开始" :value="0"></el-option>
+          <el-option label="生成中" :value="1"></el-option>
+          <el-option label="生成异常" :value="2"></el-option>
         </el-select>
       </el-form-item>
 
@@ -65,8 +64,8 @@
     <el-card class="selected-conditions-card" v-if="hasSelectedConditions">
       <div class="selected-conditions">
         <span class="condition-label">已选条件：</span>
-        <el-tag v-if="searchForm.keyword" closable @close="clearCondition('keyword')">
-          关键词：{{ searchForm.keyword }}
+        <el-tag v-if="searchForm.patient_name" closable @close="clearCondition('patient_name')">
+          关键词：{{ searchForm.patient_name }}
         </el-tag>
         <el-tag v-if="searchForm.gender" closable @close="clearCondition('gender')">
           性别：{{ searchForm.gender === 'male' ? '男' : '女' }}
@@ -74,10 +73,10 @@
         <el-tag v-if="searchForm.age" closable @close="clearCondition('age')">
           年龄：{{ searchForm.age }}
         </el-tag>
-        <el-tag v-if="searchForm.octImage" closable @close="clearCondition('octImage')">
-          OCT图像：{{ searchForm.octImage === 'uploaded' ? '已上传' : '未上传' }}
+        <el-tag v-if="searchForm.octImage !== ''" closable @close="clearCondition('octImage')">
+          OCT图像：{{ searchForm.octImage === 0 ? '未上传' : '已上传' }}
         </el-tag>
-        <el-tag v-if="searchForm.reportStatus" closable @close="clearCondition('reportStatus')">
+        <el-tag v-if="searchForm.reportStatus !== ''" closable @close="clearCondition('reportStatus')">
           报告状态：{{ formatReportStatus(searchForm.reportStatus) }}
         </el-tag>
         <el-tag v-if="searchForm.date" closable @close="clearCondition('date')">
@@ -88,13 +87,13 @@
 
     <!-- 搜索结果表格 -->
     <el-table :data="searchResults" class="result-table" v-if="searchResults.length > 0">
-      <el-table-column prop="patientName" label="患者姓名"></el-table-column>
-      <el-table-column prop="doctorName" label="医生姓名"></el-table-column>
-      <el-table-column prop="gender" label="性别"></el-table-column>
-      <el-table-column prop="age" label="年龄"></el-table-column>
-      <el-table-column prop="octImageStatus" label="OCT图像状态"></el-table-column>
-      <el-table-column prop="reportStatus" label="报告状态"></el-table-column>
-      <el-table-column prop="date" label="日期"></el-table-column>
+      <el-table-column prop="patient_name" label="患者姓名"></el-table-column>
+      <el-table-column prop="doctor_name" label="医生姓名"></el-table-column>
+<!--      <el-table-column prop="gender" label="性别"></el-table-column>-->
+<!--      <el-table-column prop="age" label="年龄"></el-table-column>-->
+      <el-table-column prop="otc_image_status" label="OCT图像状态"></el-table-column>
+      <el-table-column prop="report_status" label="报告生成状态"></el-table-column>
+<!--      <el-table-column prop="date" label="日期"></el-table-column>-->
     </el-table>
   </el-card>
 </template>
@@ -107,7 +106,7 @@ export default {
   setup() {
     // 搜索表单数据
     const searchForm = ref({
-      keyword: '',
+      patient_name: '',
       gender: '',
       age: '',
       octImage: '',
@@ -121,45 +120,76 @@ export default {
     // 判断是否有选中的条件
     const hasSelectedConditions = computed(() => {
       return (
-          searchForm.value.keyword ||
+          searchForm.value.patient_name ||
           searchForm.value.gender ||
           searchForm.value.age ||
-          searchForm.value.octImage ||
-          searchForm.value.reportStatus ||
+          searchForm.value.octImage !== '' ||
+          searchForm.value.reportStatus !== '' ||
           searchForm.value.date
       );
     });
 
     // 搜索逻辑
-    const onSearch = () => {
-      console.log('搜索条件:', searchForm.value);
-      // 模拟搜索结果
-      searchResults.value = [
-        {
-          patientName: '张三',
-          doctorName: '李医生',
-          gender: '男',
-          age: '58',
-          octImageStatus: '已上传',
-          reportStatus: '生成中',
-          date: '2023-10-01',
-        },
-        {
-          patientName: '李四',
-          doctorName: '王医生',
-          gender: '女',
-          age: '62',
-          octImageStatus: '未上传',
-          reportStatus: '未开始',
-          date: '2023-10-02',
-        },
-      ];
+    const onSearch = async () => {
+
+      // 准备发送给后端的数据
+      const requestData = {
+        patient_name: searchForm.value.patient_name,
+        gender: searchForm.value.gender,
+        age: searchForm.value.age,
+        OTCImageStatus: searchForm.value.octImage, // 0 或 1
+        PredictionStatus: searchForm.value.reportStatus, // 0, 1, 2
+      };
+
+      try {
+        // 发送 POST 请求到后端
+        const response = await fetch('http://localhost:8080/Search/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestData),
+        });
+
+        if (!response.ok) {
+          throw new Error('请求失败');
+        }
+
+        // 解析响应数据
+        const data = await response.json();
+// 清洗数据并转换数字码
+        const cleanedData = data.map(item => {
+          // 过滤掉不需要的字段
+          // eslint-disable-next-line no-unused-vars
+          const { patient, prediction, id, patient_id, reportDate, ...rest } = item;
+
+          // 转换 OCT 图像状态
+          rest.otc_image_status = rest.otc_image_status === 0 ? '未上传' : '已上传';
+
+          // 转换报告状态
+          const reportStatusMap = {
+            0: '未开始',
+            1: '生成中',
+            2: '生成异常',
+          };
+          rest.report_status = reportStatusMap[rest.report_status] || rest.report_status;
+
+          return rest;
+        });
+
+        console.log(cleanedData);
+        searchResults.value = cleanedData; // 将后端返回的数据渲染到表格中
+      } catch (error) {
+        console.error('搜索失败:', error);
+        alert('搜索失败，请稍后重试');
+      }
     };
+
 
     // 重置逻辑
     const onReset = () => {
       searchForm.value = {
-        keyword: '',
+        patient_name: '',
         gender: '',
         age: '',
         octImage: '',
@@ -177,10 +207,9 @@ export default {
     // 格式化报告状态
     const formatReportStatus = (status) => {
       const statusMap = {
-        'not-started': '未开始',
-        generating: '生成中',
-        error: '生成异常',
-        pending: '待生成',
+        0: '未开始',
+        1: '生成中',
+        2: '生成异常',
       };
       return statusMap[status] || status;
     };
