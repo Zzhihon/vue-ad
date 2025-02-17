@@ -7,13 +7,18 @@
       :ellipsis="false"
       @select="handleSelect"
   >
+    <!-- Logo 区域 -->
     <el-menu-item index="0">
       <img
+          v-if="logoUrl"
           style="width: 100px"
-          src="/images/element-plus-logo.svg"
+          :src="logoUrl"
           alt="Element logo"
       />
+      <span v-else>加载中...</span>
     </el-menu-item>
+
+    <!-- 用户菜单 -->
     <el-sub-menu index="2">
       <template #title>用户</template>
       <el-menu-item index="2-1">item one</el-menu-item>
@@ -24,16 +29,37 @@
 </template>
 
 <script>
-// import { ref } from 'vue'
-//
-// const activeIndex = ref('1')
-// const handleSelect = (key: string, keyPath: string[]) => {
-//   console.log(key, keyPath)
-// }
-export default{
-  name: "TopBar",
-}
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 
+export default {
+  name: 'TopBar',
+  setup() {
+    const logoUrl = ref(''); // 用于存储图片的 URL
+
+    // 获取图片
+    const fetchLogo = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/GetImage/ad-logo.png/', {
+          responseType: 'blob', // 获取二进制数据
+        });
+        logoUrl.value = URL.createObjectURL(response.data); // 将二进制数据转换为 URL
+        console.log('Logo URL:', logoUrl.value);
+      } catch (error) {
+        console.error('加载 Logo 失败:', error);
+      }
+    };
+
+    // 组件挂载时调用 API 获取图片
+    onMounted(() => {
+      fetchLogo();
+    });
+
+    return {
+      logoUrl,
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -59,4 +85,3 @@ html, body {
   z-index: 1000; /* 确保它在最上层 */
 }
 </style>
-

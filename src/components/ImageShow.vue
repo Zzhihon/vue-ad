@@ -1,11 +1,11 @@
 <template>
   <div class="demo-image__placeholder" style="margin-top: 48px">
     <div class="block">
-      <span class="demonstration">OTC图像</span>
+      <span class="demonstration">患者档案</span>
       <el-image :src="src" />
     </div>
     <div class="block">
-      <span class="demonstration">报告</span>
+      <span class="demonstration">OTC图像</span>
       <el-image :src="src">
         <template #placeholder>
           <div class="image-slot">Loading<span class="dot">...</span></div>

@@ -4,7 +4,7 @@
       <el-upload
           class="upload-demo"
           drag
-          action="http://localhost:8080/ImageUpload/"
+          action="http://localhost:8080/UploadImage/"
           multiple
           :on-success="handleUploadSuccess"
           :on-error="handleUploadError"
@@ -30,8 +30,8 @@
         <el-input v-model="form.patient_name" placeholder="请输入患者姓名"></el-input>
       </el-form-item>
 
-      <el-form-item label="患者身份" prop="patient_name">
-        <el-input v-model="form.patient_id" placeholder="请输入患者身份号"></el-input>
+      <el-form-item label="患者编号" prop="patient_name">
+        <el-input v-model="form.patient_id" placeholder="请输入患者编号"></el-input>
       </el-form-item>
 
 
@@ -71,7 +71,7 @@ export default {
         { required: true, message: '请输入患者姓名', trigger: 'blur' },
       ],
       patient_id: [
-        { required: true, message: '请输入患者身份号', trigger: 'blur' },
+        { required: true, message: '请输入患者编号', trigger: 'blur' },
       ],
     };
 
@@ -84,6 +84,7 @@ export default {
 
     // 文件上传失败回调
     const handleUploadError = (error, file, fileList) => {
+      console.log(error)
       console.error('文件上传失败:', error);
       console.log('上传失败的文件:', file);
       console.log('当前文件列表:', fileList);

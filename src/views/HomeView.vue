@@ -5,14 +5,10 @@
         <div><DoctorProfile :doctor="doctor"/></div>
         <el-row :gutter="20">
           <el-col :span="12" ><div class="grid-content ep-bg-purple" />
-            <ImageShow/>
+            <PatientCard/>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-        <el-col :span="12" ><div class="grid-content ep-bg-purple" />
-            <ImageShow/>
-          </el-col>
-        </el-row>
+
       </el-col>
 
 
@@ -34,8 +30,8 @@
 <script>
 import DoctorProfile from "@/components/DoctorProfile.vue";
 import PatientProfile from "@/components/PatientProfile.vue";
+import PatientCard from "@/views/PatientCard.vue";
 import OTCForm from "@/components/OTCForm.vue";
-import ImageShow from "@/components/ImageShow.vue";
 import $ from "jquery";
 import {reactive, ref, toRaw} from "vue";
 
@@ -43,7 +39,7 @@ import {reactive, ref, toRaw} from "vue";
 export default {
   name: 'HomeView',
 
-  components: {PatientProfile, DoctorProfile, OTCForm, ImageShow},
+  components: {PatientProfile, DoctorProfile, OTCForm, PatientCard},
 
   setup() {
     const doctor = reactive({
