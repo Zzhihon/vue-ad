@@ -1,34 +1,22 @@
 <template>
-  <div>
+  <div class="patient-detail">
     <el-row :gutter="20">
-      <el-col :span="12" ><div class="grid-content ep-bg-purple" />
-        <h1>患者档案: {{ patientName }}</h1>
-
+      <el-col :span="12">
         <!-- 患者信息模块 -->
-        <PatientInfo :patient="patient" />        <el-row :gutter="20">
-          <el-col :span="30" ><div class="grid-content ep-bg-purple" />
-
-            <!-- 报告图像模块 -->
-            <ReportImage :imageName="imageName" />
-          </el-col>
-        </el-row>
+        <PatientInfo :patient="patient" />
+        <!-- 报告图像模块 -->
+        <ReportImage :imageName="imageName" />
       </el-col>
-
-
-      <el-col :span="12" >
-        <div class="grid-content ep-bg-purple" />
-        <div class="patientProfile">
-          <!-- 报告信息模块 -->
-          <ReportInfo :reports="reports" @select-report="handleSelectReport" />
-        </div>
-        <div class="otcForm">
-          <!-- 预测信息模块 -->
-          <PredictionInfo :prediction="predictionInfo" />
-        </div>
+      <el-col :span="12">
+        <!-- 报告信息模块 -->
+        <ReportInfo :reports="reports" @select-report="handleSelectReport" />
+        <!-- 预测信息模块 -->
+        <PredictionInfo :prediction="predictionInfo" />
       </el-col>
     </el-row>
   </div>
 </template>
+
 <script>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
@@ -56,19 +44,19 @@ export default {
 
     // 获取患者信息
     const fetchPatient = async () => {
-      const response = await fetch(`http://localhost:8080/GetPatient/1/`);
+      const response = await fetch(`http://183.6.97.121:9088/ad/api/GetPatient/1/`);
       const data = await response.json();
       patient.value = data;
     };
 
     // 获取患者报告
     const fetchReports = async () => {
-      const response = await fetch(`http://localhost:8080/FindReportsByID/2/`);
+      const response = await fetch(`http://183.6.97.121:9088/ad/api/FindReportsByID/2/`);
       const data = await response.json();
       reports.value = data;
       selectedReport.value = data[0]; // 默认选择第一份报告
-      predictionInfo.value = selectedReport.value.prediction
-      imageName.value = "ad-ill.png"
+      predictionInfo.value = selectedReport.value.prediction;
+      imageName.value = "ad-ill.png";
     };
 
     // 处理报告选择
@@ -93,3 +81,22 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.patient-detail {
+  padding: 20px;
+}
+
+h1 {
+  margin-bottom: 20px;
+  color: #303133;
+}
+
+.el-row {
+  margin-bottom: 20px;
+}
+
+.el-col {
+  padding: 10px;
+}
+</style>

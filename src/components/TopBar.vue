@@ -16,6 +16,7 @@
           alt="Element logo"
       />
       <span v-else>加载中...</span>
+      <h2>智瞳溯忆</h2>
     </el-menu-item>
 
     <!-- 用户菜单 -->
@@ -40,7 +41,7 @@ export default {
     // 获取图片
     const fetchLogo = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/GetImage/ad-logo.png/', {
+        const response = await axios.get('http://183.6.97.121:9088/ad/api/GetImage/ad-logo.png/', {
           responseType: 'blob', // 获取二进制数据
         });
         logoUrl.value = URL.createObjectURL(response.data); // 将二进制数据转换为 URL

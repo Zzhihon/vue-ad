@@ -1,31 +1,17 @@
 <template>
-  <div>
+  <div class="home-view">
     <el-row :gutter="20">
-      <el-col :span="12" ><div class="grid-content ep-bg-purple" />
-        <div><DoctorProfile :doctor="doctor"/></div>
-        <el-row :gutter="20">
-          <el-col :span="12" ><div class="grid-content ep-bg-purple" />
-            <PatientCard/>
-          </el-col>
-        </el-row>
-
+      <el-col :span="12">
+        <DoctorProfile :doctor="doctor" />
+        <PatientCard />
       </el-col>
-
-
-      <el-col :span="12" >
-        <div class="grid-content ep-bg-purple" />
-        <div class="patientProfile">
-          <PatientProfile :patients="patients"/>
-        </div>
-        <div class="otcForm">
-          <OTCForm/>
-        </div>
+      <el-col :span="12">
+        <PatientProfile :patients="patients" />
+        <OTCForm />
       </el-col>
     </el-row>
   </div>
 </template>
-
-
 
 <script>
 import DoctorProfile from "@/components/DoctorProfile.vue";
@@ -33,57 +19,66 @@ import PatientProfile from "@/components/PatientProfile.vue";
 import PatientCard from "@/views/PatientCard.vue";
 import OTCForm from "@/components/OTCForm.vue";
 import $ from "jquery";
-import {reactive, ref, toRaw} from "vue";
-
+import { reactive, ref } from "vue";
 
 export default {
-  name: 'HomeView',
-
-  components: {PatientProfile, DoctorProfile, OTCForm, PatientCard},
-
+  components: {
+    DoctorProfile,
+    PatientProfile,
+    PatientCard,
+    OTCForm,
+  },
   setup() {
     const doctor = reactive({
       name: "",
-      id: "",
       address: "",
-    })
-    // let user = ref({});
+      contact:"",
+      profession:"",
+      description:"",
+      email:"",
+    });
+
+    const patients = ref([]);
+
     $.ajax({
-      url: 'http://localhost:8080/GetDoctor/1/',
+      url: 'http://183.6.97.121:9088/ad/api//GetDoctor/1/',
       type: 'GET',
       success(res) {
         doctor.name = res.name;
-        doctor.id = res.ID;
         doctor.address = res.address;
-        console.log(toRaw(doctor));  // 使用 toRaw 打印原始对象
-      }
-
+        doctor.contact = res.contact;
+        doctor.profession = res.profession;
+        doctor.description = res.description;
+        doctor.email = res.email;
+      },
     });
-
-    const patients = ref([])
 
     $.ajax({
-      url: 'http://localhost:8080/GetPatients/1/',
+      url: 'http://183.6.97.121:9088/ad/api//GetPatients/1/',
       type: 'GET',
       success(res) {
-        patients.value = res
-        console.log("父组件： " + JSON.stringify((patients.value)));  // 使用 toRaw 打印原始对象
-      }
-
+        patients.value = res;
+      },
     });
-
 
     return {
       doctor,
-      patients
-    }
-  }
-}
-
+      patients,
+    };
+  },
+};
 </script>
 
 <style scoped>
-.otcForm {
-  margin-top: 50px;
+.home-view {
+  padding: 20px;
+}
+
+.el-row {
+  margin-bottom: 20px;
+}
+
+.el-col {
+  padding: 10px;
 }
 </style>

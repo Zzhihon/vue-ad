@@ -1,29 +1,28 @@
 <template>
-  <div class="patient-card">
-    <!-- 图片展示区域 -->
+  <el-card class="patient-card" shadow="hover">
+    <div class="header">
+      <el-icon><User /></el-icon>
+      <h2>患者信息</h2>
+    </div>
     <div class="image-container">
       <img :src="imageUrl" alt="OTC Image" v-if="imageUrl" />
       <p v-else>加载中...</p>
     </div>
-
-    <!-- 病人信息和报告状态 -->
-    <div class="info-container">
-      <h2>{{ patient.name }}</h2>
-      <p>年龄: {{ patient.age }}</p>
-      <p>性别: {{ patient.gender }}</p>
-      <p>报告状态: {{ reportStatus }}</p>
-    </div>
-
-    <!-- 随机选择病人按钮 -->
-    <button @click="loadRandomPatient">切换病人</button>
-  </div>
+    <el-descriptions :column="1" border>
+      <el-descriptions-item label="姓名">{{ patient.name }}</el-descriptions-item>
+      <el-descriptions-item label="年龄">{{ patient.age }}</el-descriptions-item>
+      <el-descriptions-item label="性别">{{ patient.gender }}</el-descriptions-item>
+      <el-descriptions-item label="报告状态">{{ reportStatus }}</el-descriptions-item>
+    </el-descriptions>
+    <el-button type="primary" @click="loadRandomPatient" class="switch-button">切换病人</el-button>
+  </el-card>
 </template>
 
 <script>
+import {User} from '@element-plus/icons-vue';
 import axios from 'axios';
 
 export default {
-  name: "PatientCard",
   data() {
     return {
       patient: {
@@ -46,43 +45,35 @@ export default {
     };
   },
   computed: {
-    // 计算属性：将 report_status 转换为状态码
     reportStatus() {
       return this.reportStatusMap[this.report.report_status] || this.report.report_status;
     },
   },
   methods: {
-    // 随机选择一个病人 ID
     getRandomPatientId() {
       const randomIndex = Math.floor(Math.random() * this.patientIds.length);
       return this.patientIds[randomIndex];
     },
-    // 加载病人信息和报告
     async loadPatientData(patientId) {
       try {
-        // 获取病人信息
-        const patientResponse = await axios.get(`http://localhost:8080/GetPatient/${patientId}/`);
+        const patientResponse = await axios.get(`http://183.6.97.121:9088/ad/api/GetPatient/${patientId}/`);
         this.patient = patientResponse.data;
 
-        // 获取病人的报告列表
-        const reportsResponse = await axios.get(`http://localhost:8080/FindReportsByID/${patientId}/`);
+        const reportsResponse = await axios.get(`http://183.6.97.121:9088/ad/api/FindReportsByID/${patientId}/`);
         if (reportsResponse.data.length > 0) {
-          // 默认使用第一份报告
           this.report = reportsResponse.data[0];
-          // 获取 OTC 图像
           this.loadImage(this.report.image_path);
         }
       } catch (error) {
         console.error('加载数据失败:', error);
       }
     },
-    // 加载 OTC 图像
     async loadImage(imagePath) {
-      imagePath = "ad-ill.png"
+      imagePath = "ad-ill.png";
       if (imagePath) {
         try {
-          const response = await axios.get(`http://localhost:8080/GetImage/${imagePath}/`, {
-            responseType: 'blob', // 获取二进制数据
+          const response = await axios.get(`http://183.6.97.121:9088/ad/api/GetImage/${imagePath}/`, {
+            responseType: 'blob',
           });
           this.imageUrl = URL.createObjectURL(response.data);
         } catch (error) {
@@ -90,49 +81,53 @@ export default {
         }
       }
     },
-    // 随机选择病人并加载数据
     loadRandomPatient() {
       const patientId = this.getRandomPatientId();
       this.loadPatientData(patientId);
     },
   },
   mounted() {
-    // 默认加载 1 号病人的数据
     this.loadPatientData(1);
+  },
+  components: {
+    User,
   },
 };
 </script>
 
 <style scoped>
 .patient-card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  margin-bottom: 20px;
+  background-color: #f5f7fa;
   padding: 16px;
-  max-width: 300px;
-  margin: 16px;
+  border-radius: 8px;
 }
 
-.image-container img {
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.header h2 {
+  margin-left: 8px;
+  margin-bottom: 0;
+  color: #67c23a;
+}
+
+.image-container {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+img {
   max-width: 100%;
   height: auto;
   border-radius: 8px;
 }
 
-.info-container {
+.switch-button {
   margin-top: 16px;
-}
-
-button {
-  margin-top: 16px;
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
+  width: 100%;
 }
 </style>

@@ -80,7 +80,7 @@
           报告状态：{{ formatReportStatus(searchForm.reportStatus) }}
         </el-tag>
         <el-tag v-if="searchForm.date" closable @close="clearCondition('date')">
-          日期：{{ formatDateRange(searchForm.date) }}
+          日期：
         </el-tag>
       </div>
     </el-card>
@@ -88,12 +88,11 @@
     <!-- 搜索结果表格 -->
     <el-table :data="searchResults" class="result-table" v-if="searchResults.length > 0">
       <el-table-column prop="patient_name" label="患者姓名"></el-table-column>
-      <el-table-column prop="doctor_name" label="医生姓名"></el-table-column>
-<!--      <el-table-column prop="gender" label="性别"></el-table-column>-->
-<!--      <el-table-column prop="age" label="年龄"></el-table-column>-->
+      <el-table-column prop="gender" label="性别" :formatter="formatGender"></el-table-column>
+      <el-table-column prop="age" label="年龄"></el-table-column>
       <el-table-column prop="otc_image_status" label="OCT图像状态"></el-table-column>
       <el-table-column prop="report_status" label="报告生成状态"></el-table-column>
-<!--      <el-table-column prop="date" label="日期"></el-table-column>-->
+<!--      <el-table-column prop="date" label="日期" :formatter="formatDate"></el-table-column>-->
     </el-table>
   </el-card>
 </template>
@@ -131,7 +130,6 @@ export default {
 
     // 搜索逻辑
     const onSearch = async () => {
-
       // 准备发送给后端的数据
       const requestData = {
         patient_name: searchForm.value.patient_name,
@@ -143,7 +141,7 @@ export default {
 
       try {
         // 发送 POST 请求到后端
-        const response = await fetch('http://localhost:8080/Search/', {
+        const response = await fetch('http://183.6.97.121:9088/ad/api/Search/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -157,14 +155,22 @@ export default {
 
         // 解析响应数据
         const data = await response.json();
-// 清洗数据并转换数字码
+
+        // 清洗数据并转换数字码
         const cleanedData = data.map(item => {
-          // 过滤掉不需要的字段
-          // eslint-disable-next-line no-unused-vars
-          const { patient, prediction, id, patient_id, reportDate, ...rest } = item;
+          // 提取 patient 对象中的数据
+          const { patient, ...rest } = item;
+
+          // 合并 patient 对象中的字段
+          const mergedData = {
+            ...rest,
+            patient_name: patient.name,
+            gender: patient.gender,
+            age: patient.age,
+          };
 
           // 转换 OCT 图像状态
-          rest.otc_image_status = rest.otc_image_status === 0 ? '未上传' : '已上传';
+          mergedData.otc_image_status = mergedData.otc_image_status === 0 ? '未上传' : '已上传';
 
           // 转换报告状态
           const reportStatusMap = {
@@ -172,9 +178,12 @@ export default {
             1: '生成中',
             2: '生成异常',
           };
-          rest.report_status = reportStatusMap[rest.report_status] || rest.report_status;
+          mergedData.report_status = reportStatusMap[mergedData.report_status] || mergedData.report_status;
 
-          return rest;
+          // 格式化日期
+          // mergedData.date = formatDate(reportDate);
+
+          return mergedData;
         });
 
         console.log(cleanedData);
@@ -184,7 +193,6 @@ export default {
         alert('搜索失败，请稍后重试');
       }
     };
-
 
     // 重置逻辑
     const onReset = () => {
@@ -221,6 +229,22 @@ export default {
       return `${start.toLocaleDateString()} 至 ${end.toLocaleDateString()}`;
     };
 
+    // 格式化性别
+    const formatGender = (row, column, cellValue) => {
+      const genderMap = {
+        male: '男',
+        female: '女',
+      };
+      return genderMap[cellValue] || cellValue;
+    };
+
+    // 格式化日期
+    const formatDate = (dateString) => {
+      if (!dateString) return '';
+      const date = new Date(dateString);
+      return date.toISOString().split('T')[0]; // 只显示年份和日期
+    };
+
     return {
       searchForm,
       searchResults,
@@ -230,6 +254,8 @@ export default {
       clearCondition,
       formatReportStatus,
       formatDateRange,
+      formatGender,
+      formatDate,
     };
   },
 };

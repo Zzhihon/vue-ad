@@ -1,60 +1,50 @@
 <template>
-  <ContentBase>
-    <el-card class="box-card">
-      <el-upload
-          class="upload-demo"
-          drag
-          action="http://localhost:8080/UploadImage/"
-          multiple
-          :on-success="handleUploadSuccess"
-          :on-error="handleUploadError"
-      >
-        <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-        <div class="el-upload__text">
-          Drop file here or <em>click to upload</em>
-        </div>
-        <template #tip>
-          <div class="el-upload__tip">
-            jpg/png files with a size less than 500kb
-          </div>
-        </template>
-      </el-upload>
-    </el-card>
-
+  <el-card class="otc-form" shadow="hover">
+    <div class="header">
+      <el-icon><Edit /></el-icon>
+      <h2>OCT 表单</h2>
+    </div>
+    <el-upload
+        class="upload-demo"
+        drag
+        action="http://localhost:8080/UploadImage/"
+        multiple
+        :on-success="handleUploadSuccess"
+        :on-error="handleUploadError"
+    >
+      <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+      <div class="el-upload__text">将文件拖到此处或<em>点击上传</em></div>
+      <template #tip>
+        <div class="el-upload__tip">jpg/png 文件，大小不超过 500kb</div>
+      </template>
+    </el-upload>
     <el-form :model="form" :rules="rules" ref="formRef" class="demo-form">
       <el-form-item label="医生姓名" prop="doctor_name">
-        <el-input v-model="form.doctor_name" placeholder="请输入医生姓名"></el-input>
+        <el-input v-model="form.doctor_name" placeholder="请输入医生姓名" />
       </el-form-item>
-
       <el-form-item label="患者姓名" prop="patient_name">
-        <el-input v-model="form.patient_name" placeholder="请输入患者姓名"></el-input>
+        <el-input v-model="form.patient_name" placeholder="请输入患者姓名" />
       </el-form-item>
-
-      <el-form-item label="患者编号" prop="patient_name">
-        <el-input v-model="form.patient_id" placeholder="请输入患者编号"></el-input>
+      <el-form-item label="患者编号" prop="patient_id">
+        <el-input v-model="form.patient_id" placeholder="请输入患者编号" />
       </el-form-item>
-
-
-
       <el-form-item>
         <el-button type="primary" @click="submitForm">提交</el-button>
         <el-button @click="resetForm">重置</el-button>
       </el-form-item>
     </el-form>
-  </ContentBase>
+  </el-card>
 </template>
 
 <script>
-import { UploadFilled } from '@element-plus/icons-vue';
-import ContentBase from './ContentBase.vue';
-import { ref } from 'vue';
+import { Edit, UploadFilled } from '@element-plus/icons-vue';
+import {ref} from "vue";
 
 export default {
   components: {
-    ContentBase,
+    Edit,
     'upload-filled': UploadFilled,
   },
-
   setup() {
     const formRef = ref(null);
     const form = ref({
@@ -64,55 +54,30 @@ export default {
     });
 
     const rules = {
-      doctor_name: [
-        { required: true, message: '请输入医生姓名', trigger: 'blur' },
-      ],
-      patient_name: [
-        { required: true, message: '请输入患者姓名', trigger: 'blur' },
-      ],
-      patient_id: [
-        { required: true, message: '请输入患者编号', trigger: 'blur' },
-      ],
+      doctor_name: [{ required: true, message: '请输入医生姓名', trigger: 'blur' }],
+      patient_name: [{ required: true, message: '请输入患者姓名', trigger: 'blur' }],
+      patient_id: [{ required: true, message: '请输入患者编号', trigger: 'blur' }],
     };
 
-    // 文件上传成功回调
     const handleUploadSuccess = (response, file, fileList) => {
-      console.log('文件上传成功:', file);
-      console.log('服务器返回的响应:', response);
-      console.log('当前文件列表:', fileList);
+      console.log('文件列表:',file, fileList);
     };
 
-    // 文件上传失败回调
     const handleUploadError = (error, file, fileList) => {
-      console.log(error)
-      console.error('文件上传失败:', error);
-      console.log('上传失败的文件:', file);
-      console.log('当前文件列表:', fileList);
+      console.log('文件列表:',file, fileList);
     };
-    console.log('表单数据:', form.value);
 
-    // 提交表单
     const submitForm = () => {
       formRef.value.validate((valid) => {
         if (valid) {
-          // 打印表单数据，确保接收到了表单信息
-          console.log('表单数据:', form.value);
-
-          // 使用 fetch 发送 AJAX 请求
-          fetch('http://localhost:8080/AddReport/', {
+          fetch('http://183.6.97.121:9088/ad/api/AddReport/', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(form.value),
           })
-              .then((response) => {
-                if (response.ok) {
-                  return response.json();
-                } else {
-                  throw new Error('请求失败');
-                }
-              })
+              .then((response) => response.json())
               .then((data) => {
                 console.log('提交成功:', data);
                 alert('提交成功');
@@ -123,15 +88,12 @@ export default {
               });
         } else {
           console.log('表单验证失败');
-          return false;
         }
       });
     };
 
-    // 重置表单
     const resetForm = () => {
       formRef.value.resetFields();
-      console.log('表单已重置');
     };
 
     return {
@@ -148,11 +110,24 @@ export default {
 </script>
 
 <style scoped>
-.box-card {
-  margin: 20px;
-  padding: 20px;
+.otc-form {
+  margin-top: 50px;
+  margin-bottom: 20px;
+  background-color: #f5f7fa;
+  padding: 16px;
   border-radius: 8px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.header h2 {
+  margin-left: 8px;
+  margin-bottom: 0;
+  color: #f56c6c;
 }
 
 .upload-demo {
