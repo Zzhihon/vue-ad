@@ -31,23 +31,31 @@
 
 <script>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
+import { ElMessage } from 'element-plus';
+import api from '@/api';
 
 export default {
   name: 'TopBar',
   setup() {
     const logoUrl = ref(''); // 用于存储图片的 URL
+    const loading = ref(false);
 
     // 获取图片
     const fetchLogo = async () => {
+      loading.value = true;
       try {
-        const response = await axios.get('http://183.6.97.121:9088/ad/api/GetImage/ad-logo.png/', {
-          responseType: 'blob', // 获取二进制数据
-        });
-        logoUrl.value = URL.createObjectURL(response.data); // 将二进制数据转换为 URL
-        console.log('Logo URL:', logoUrl.value);
+        const response = await api.patient.getImage('ad-logo.png');
+        if (response && response.data) {
+          logoUrl.value = URL.createObjectURL(response.data); // 将二进制数据转换为 URL
+          console.log('Logo URL:', logoUrl.value);
+        } else {
+          throw new Error('无效的图像响应');
+        }
       } catch (error) {
+        ElMessage.error('加载 Logo 失败');
         console.error('加载 Logo 失败:', error);
+      } finally {
+        loading.value = false;
       }
     };
 
@@ -58,6 +66,7 @@ export default {
 
     return {
       logoUrl,
+      loading
     };
   },
 };

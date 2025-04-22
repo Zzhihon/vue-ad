@@ -7,10 +7,16 @@ import store from './store'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 
+
+import api from './api'
+
 const app = createApp(App)
 
 // 使用 Element Plus
 app.use(store)
     .use(router)
     .use(ElementPlus)
-    .mount('#app')
+
+app.config.globalProperties.$api = api
+
+app.mount('#app')

@@ -18,8 +18,9 @@ import DoctorProfile from "@/components/DoctorProfile.vue";
 import PatientProfile from "@/components/PatientProfile.vue";
 import PatientCard from "@/views/PatientCard.vue";
 import OTCForm from "@/components/OTCForm.vue";
-import $ from "jquery";
-import { reactive, ref } from "vue";
+import { reactive, ref, onMounted } from "vue";
+import { ElMessage } from 'element-plus';
+import api from '@/api';
 
 export default {
   components: {
@@ -32,38 +33,66 @@ export default {
     const doctor = reactive({
       name: "",
       address: "",
-      contact:"",
-      profession:"",
-      description:"",
-      email:"",
+      contact: "",
+      profession: "",
+      description: "",
+      email: "",
     });
 
     const patients = ref([]);
+    const loading = ref(false);
 
-    $.ajax({
-      url: 'http://183.6.97.121:9088/ad/api//GetDoctor/1/',
-      type: 'GET',
-      success(res) {
-        doctor.name = res.name;
-        doctor.address = res.address;
-        doctor.contact = res.contact;
-        doctor.profession = res.profession;
-        doctor.description = res.description;
-        doctor.email = res.email;
-      },
-    });
+    // 获取医生信息
+    const fetchDoctorInfo = async () => {
+      loading.value = true;
+      try {
+        const response = await api.doctor.getDoctor(1);
+        
+        // 处理不同的响应格式可能性
+        const data = response.data || response;
+        
+        if (data) {
+          doctor.name = data.name || '';
+          doctor.address = data.address || '';
+          doctor.contact = data.contact || '';
+          doctor.profession = data.profession || '';
+          doctor.description = data.description || '';
+          doctor.email = data.email || '';
+        }
+      } catch (error) {
+        ElMessage.error('获取医生信息失败');
+        console.error('获取医生信息失败:', error);
+      } finally {
+        loading.value = false;
+      }
+    };
 
-    $.ajax({
-      url: 'http://183.6.97.121:9088/ad/api//GetPatients/1/',
-      type: 'GET',
-      success(res) {
-        patients.value = res;
-      },
+    // 获取患者列表
+    const fetchPatients = async () => {
+      loading.value = true;
+      try {
+        const response = await api.doctor.getPatients(1);
+        
+        // 处理不同的响应格式可能性
+        patients.value = response.data || response || [];
+      } catch (error) {
+        ElMessage.error('获取患者列表失败');
+        console.error('获取患者列表失败:', error);
+      } finally {
+        loading.value = false;
+      }
+    };
+
+    // 在组件挂载时获取数据
+    onMounted(() => {
+      fetchDoctorInfo();
+      fetchPatients();
     });
 
     return {
       doctor,
       patients,
+      loading,
     };
   },
 };

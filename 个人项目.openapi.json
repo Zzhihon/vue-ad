@@ -1,0 +1,1251 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "个人项目",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/ad/api//GetDoctor/{doctorID}/": {
+      "get": {
+        "summary": "/GetDoctor/{doctorID}/",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "doctorID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "contact": {
+                      "type": "string"
+                    },
+                    "address": {
+                      "type": "string"
+                    },
+                    "profession": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "patients": {
+                      "type": "null"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "contact",
+                    "address",
+                    "profession",
+                    "description",
+                    "patients"
+                  ]
+                },
+                "example": {
+                  "id": 1,
+                  "name": "qwq",
+                  "email": "1alice@example.com",
+                  "contact": "1123456789",
+                  "address": "123 Main Street",
+                  "profession": "Cardiologist",
+                  "description": "",
+                  "patients": null
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/AddDoctor/": {
+      "post": {
+        "summary": "/AddDoctor/",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "contact": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "string"
+                  },
+                  "profession": {
+                    "type": "string"
+                  },
+                  "describe": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "email",
+                  "contact",
+                  "address",
+                  "profession",
+                  "describe"
+                ]
+              },
+              "example": {
+                "name": "adasdaq",
+                "email": "1alicasde@example.com",
+                "contact": "11234asd56789",
+                "address": "123 Main Street",
+                "profession": "Cardiologist",
+                "describe": "111asd11"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": "{\"id\":3,\"name\":\"adasdaq\",\"email\":\"1alicasde@example.com\",\"contact\":\"11234asd56789\",\"address\":\"123 Main Street\",\"profession\":\"Cardiologist\",\"description\":\"\",\"patients\":null}\n"
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/UploadImage/": {
+      "post": {
+        "summary": "/UploadImage/",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "example": "file://C:\\Users\\Radein\\Desktop\\mmm.jpg",
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": [
+                  "file"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": "Upload successful"
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/UpdateDoctor/": {
+      "post": {
+        "summary": "/UpdateDoctor/",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "contact": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "string"
+                  },
+                  "profession": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "patients": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "email",
+                  "contact",
+                  "address",
+                  "profession",
+                  "description",
+                  "patients"
+                ]
+              },
+              "example": {
+                "id": 1,
+                "name": "李丽",
+                "email": "1alice@example.com",
+                "contact": "1123456789",
+                "address": "北京协和医院",
+                "profession": "神经病学",
+                "description": "从事单纤维肌电图和肌电图干扰相分析在运动神经元病、重症肌无力、多发性肌炎及脊髓灰质后综合征的临床和研究",
+                "patients": null
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": "{\"id\":1,\"name\":\"李丽\",\"email\":\"1alice@example.com\",\"contact\":\"1123456789\",\"address\":\"北京协和医院\",\"profession\":\"神经病学\",\"description\":\"从事单纤维肌电图和肌电图干扰相分析在运动神经元病、重症肌无力、多发性肌炎及脊髓灰质后综合征的临床和研究\",\"patients\":null}\n"
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/AddPatient/": {
+      "post": {
+        "summary": "/AddPatient/",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "age": {
+                    "type": "integer"
+                  },
+                  "gender": {
+                    "type": "string"
+                  },
+                  "doctor_id": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "name",
+                  "age",
+                  "gender",
+                  "doctor_id"
+                ]
+              },
+              "example": {
+                "name": "czwq",
+                "age": 78,
+                "gender": "male",
+                "doctor_id": 1
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": "{\"name\":\"czwq\",\"age\":78,\"gender\":\"male\",\"doctor_id\":1}\n"
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/AddReport/": {
+      "post": {
+        "summary": "/AddReport/",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "patient_id": {
+                    "type": "string"
+                  },
+                  "patient_name": {
+                    "type": "string"
+                  },
+                  "doctor_name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "patient_id",
+                  "patient_name",
+                  "doctor_name"
+                ]
+              },
+              "example": {
+                "patient_id": "2",
+                "patient_name": "ooo",
+                "doctor_name": "sdsd"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": "{\"doctor_name\":\"sdsd\",\"patient_name\":\"ooo\",\"patient_id\":\"2\"}\n"
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/GetPatients/{patientID}/": {
+      "get": {
+        "summary": "/GetPatients/{patientID}/",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "patientID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "age": {
+                        "type": "integer"
+                      },
+                      "gender": {
+                        "type": "string"
+                      },
+                      "otc_reports": {
+                        "type": "null"
+                      },
+                      "doctors": {
+                        "type": "null"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name",
+                      "age",
+                      "gender",
+                      "otc_reports",
+                      "doctors"
+                    ]
+                  }
+                },
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "ooo",
+                    "age": 89,
+                    "gender": "male",
+                    "otc_reports": null,
+                    "doctors": null
+                  },
+                  {
+                    "id": 2,
+                    "name": "abc",
+                    "age": 67,
+                    "gender": "male",
+                    "otc_reports": null,
+                    "doctors": null
+                  },
+                  {
+                    "id": 3,
+                    "name": "asd",
+                    "age": 78,
+                    "gender": "male",
+                    "otc_reports": null,
+                    "doctors": null
+                  },
+                  {
+                    "id": 4,
+                    "name": "qwe",
+                    "age": 78,
+                    "gender": "male",
+                    "otc_reports": null,
+                    "doctors": null
+                  },
+                  {
+                    "id": 5,
+                    "name": "czwq",
+                    "age": 78,
+                    "gender": "male",
+                    "otc_reports": null,
+                    "doctors": null
+                  }
+                ]
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/Search/": {
+      "post": {
+        "summary": "/Search/",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "gender": {
+                    "type": "string"
+                  },
+                  "age_range": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "gender",
+                  "age_range"
+                ]
+              },
+              "example": {
+                "gender": "male",
+                "age_range": "50-90"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "patient_name": {
+                        "type": "string"
+                      },
+                      "doctor_name": {
+                        "type": "string"
+                      },
+                      "patient_id": {
+                        "type": "integer"
+                      },
+                      "patient": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "age": {
+                            "type": "integer"
+                          },
+                          "gender": {
+                            "type": "string"
+                          },
+                          "otc_reports": {
+                            "type": "null"
+                          },
+                          "doctors": {
+                            "type": "null"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "age",
+                          "gender",
+                          "otc_reports",
+                          "doctors"
+                        ]
+                      },
+                      "reportDate": {
+                        "type": "string"
+                      },
+                      "prediction": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "otc_report_id": {
+                            "type": "integer"
+                          },
+                          "otc_report": {
+                            "type": "null"
+                          },
+                          "probability": {
+                            "type": "string"
+                          },
+                          "advice": {
+                            "type": "string"
+                          },
+                          "final": {
+                            "type": "integer"
+                          },
+                          "lr": {
+                            "type": "integer"
+                          },
+                          "svm": {
+                            "type": "integer"
+                          },
+                          "dt": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "otc_report_id",
+                          "otc_report",
+                          "probability",
+                          "advice",
+                          "final",
+                          "lr",
+                          "svm",
+                          "dt"
+                        ]
+                      },
+                      "otc_image_status": {
+                        "type": "integer"
+                      },
+                      "report_status": {
+                        "type": "integer"
+                      },
+                      "file_name": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "patient_name",
+                      "doctor_name",
+                      "patient_id",
+                      "patient",
+                      "reportDate",
+                      "prediction",
+                      "otc_image_status",
+                      "report_status",
+                      "file_name"
+                    ]
+                  }
+                },
+                "example": [
+                  {
+                    "id": 1,
+                    "patient_name": "ooo",
+                    "doctor_name": "qwq",
+                    "patient_id": 1,
+                    "patient": {
+                      "id": 1,
+                      "name": "ooo",
+                      "age": 89,
+                      "gender": "male",
+                      "otc_reports": null,
+                      "doctors": null
+                    },
+                    "reportDate": "2025-02-22T15:08:20.635938Z",
+                    "prediction": {
+                      "id": 0,
+                      "otc_report_id": 0,
+                      "otc_report": null,
+                      "probability": "",
+                      "advice": "",
+                      "final": 0,
+                      "lr": 0,
+                      "svm": 0,
+                      "dt": 0
+                    },
+                    "otc_image_status": 0,
+                    "report_status": 0,
+                    "file_name": ""
+                  },
+                  {
+                    "id": 2,
+                    "patient_name": "ooo",
+                    "doctor_name": "qwq",
+                    "patient_id": 1,
+                    "patient": {
+                      "id": 1,
+                      "name": "ooo",
+                      "age": 89,
+                      "gender": "male",
+                      "otc_reports": null,
+                      "doctors": null
+                    },
+                    "reportDate": "2025-02-22T16:05:55.375147Z",
+                    "prediction": {
+                      "id": 0,
+                      "otc_report_id": 0,
+                      "otc_report": null,
+                      "probability": "",
+                      "advice": "",
+                      "final": 0,
+                      "lr": 0,
+                      "svm": 0,
+                      "dt": 0
+                    },
+                    "otc_image_status": 0,
+                    "report_status": 0,
+                    "file_name": ""
+                  },
+                  {
+                    "id": 9,
+                    "patient_name": "ooo",
+                    "doctor_name": "qwq",
+                    "patient_id": 1,
+                    "patient": {
+                      "id": 1,
+                      "name": "ooo",
+                      "age": 89,
+                      "gender": "male",
+                      "otc_reports": null,
+                      "doctors": null
+                    },
+                    "reportDate": "2025-02-24T15:11:56.601066Z",
+                    "prediction": {
+                      "id": 0,
+                      "otc_report_id": 0,
+                      "otc_report": null,
+                      "probability": "",
+                      "advice": "",
+                      "final": 0,
+                      "lr": 0,
+                      "svm": 0,
+                      "dt": 0
+                    },
+                    "otc_image_status": 0,
+                    "report_status": 0,
+                    "file_name": ""
+                  },
+                  {
+                    "id": 11,
+                    "patient_name": "ooo",
+                    "doctor_name": "qwq",
+                    "patient_id": 1,
+                    "patient": {
+                      "id": 1,
+                      "name": "ooo",
+                      "age": 89,
+                      "gender": "male",
+                      "otc_reports": null,
+                      "doctors": null
+                    },
+                    "reportDate": "2025-02-24T15:47:58.885869Z",
+                    "prediction": {
+                      "id": 0,
+                      "otc_report_id": 0,
+                      "otc_report": null,
+                      "probability": "",
+                      "advice": "",
+                      "final": 0,
+                      "lr": 0,
+                      "svm": 0,
+                      "dt": 0
+                    },
+                    "otc_image_status": 0,
+                    "report_status": 0,
+                    "file_name": ""
+                  },
+                  {
+                    "id": 12,
+                    "patient_name": "abc",
+                    "doctor_name": "qwq",
+                    "patient_id": 2,
+                    "patient": {
+                      "id": 2,
+                      "name": "abc",
+                      "age": 67,
+                      "gender": "male",
+                      "otc_reports": null,
+                      "doctors": null
+                    },
+                    "reportDate": "2025-02-24T16:16:50.734386Z",
+                    "prediction": {
+                      "id": 0,
+                      "otc_report_id": 0,
+                      "otc_report": null,
+                      "probability": "",
+                      "advice": "",
+                      "final": 0,
+                      "lr": 0,
+                      "svm": 0,
+                      "dt": 0
+                    },
+                    "otc_image_status": 0,
+                    "report_status": 0,
+                    "file_name": ""
+                  },
+                  {
+                    "id": 13,
+                    "patient_name": "asd",
+                    "doctor_name": "qwq",
+                    "patient_id": 3,
+                    "patient": {
+                      "id": 3,
+                      "name": "asd",
+                      "age": 78,
+                      "gender": "male",
+                      "otc_reports": null,
+                      "doctors": null
+                    },
+                    "reportDate": "2025-02-24T16:21:35.480887Z",
+                    "prediction": {
+                      "id": 0,
+                      "otc_report_id": 0,
+                      "otc_report": null,
+                      "probability": "",
+                      "advice": "",
+                      "final": 0,
+                      "lr": 0,
+                      "svm": 0,
+                      "dt": 0
+                    },
+                    "otc_image_status": 0,
+                    "report_status": 0,
+                    "file_name": ""
+                  },
+                  {
+                    "id": 14,
+                    "patient_name": "ooo",
+                    "doctor_name": "sdsd",
+                    "patient_id": 2,
+                    "patient": {
+                      "id": 2,
+                      "name": "abc",
+                      "age": 67,
+                      "gender": "male",
+                      "otc_reports": null,
+                      "doctors": null
+                    },
+                    "reportDate": "2025-04-17T06:51:07.179265Z",
+                    "prediction": {
+                      "id": 0,
+                      "otc_report_id": 0,
+                      "otc_report": null,
+                      "probability": "",
+                      "advice": "",
+                      "final": 0,
+                      "lr": 0,
+                      "svm": 0,
+                      "dt": 0
+                    },
+                    "otc_image_status": 0,
+                    "report_status": 0,
+                    "file_name": ""
+                  }
+                ]
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/GetPatient/{patientID}/": {
+      "get": {
+        "summary": "/GetPatient/{patientID}/",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "patientID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "age": {
+                      "type": "integer"
+                    },
+                    "gender": {
+                      "type": "string"
+                    },
+                    "otc_reports": {
+                      "type": "null"
+                    },
+                    "doctors": {
+                      "type": "null"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "age",
+                    "gender",
+                    "otc_reports",
+                    "doctors"
+                  ]
+                },
+                "example": {
+                  "id": 1,
+                  "name": "ooo",
+                  "age": 89,
+                  "gender": "male",
+                  "otc_reports": null,
+                  "doctors": null
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/FindReportsByID/{reportID}/": {
+      "get": {
+        "summary": "/FindReportsByID/{reportID}/",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "reportID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "patient_name": {
+                        "type": "string"
+                      },
+                      "doctor_name": {
+                        "type": "string"
+                      },
+                      "patient_id": {
+                        "type": "integer"
+                      },
+                      "patient": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "age": {
+                            "type": "integer"
+                          },
+                          "gender": {
+                            "type": "string"
+                          },
+                          "otc_reports": {
+                            "type": "null"
+                          },
+                          "doctors": {
+                            "type": "null"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "age",
+                          "gender",
+                          "otc_reports",
+                          "doctors"
+                        ]
+                      },
+                      "reportDate": {
+                        "type": "string"
+                      },
+                      "prediction": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "otc_report_id": {
+                            "type": "integer"
+                          },
+                          "otc_report": {
+                            "type": "null"
+                          },
+                          "probability": {
+                            "type": "string"
+                          },
+                          "advice": {
+                            "type": "string"
+                          },
+                          "final": {
+                            "type": "integer"
+                          },
+                          "lr": {
+                            "type": "integer"
+                          },
+                          "svm": {
+                            "type": "integer"
+                          },
+                          "dt": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "otc_report_id",
+                          "otc_report",
+                          "probability",
+                          "advice",
+                          "final",
+                          "lr",
+                          "svm",
+                          "dt"
+                        ]
+                      },
+                      "otc_image_status": {
+                        "type": "integer"
+                      },
+                      "report_status": {
+                        "type": "integer"
+                      },
+                      "file_name": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "patient_name",
+                      "doctor_name",
+                      "patient_id",
+                      "patient",
+                      "reportDate",
+                      "prediction",
+                      "otc_image_status",
+                      "report_status",
+                      "file_name"
+                    ]
+                  }
+                },
+                "example": [
+                  {
+                    "id": 1,
+                    "patient_name": "ooo",
+                    "doctor_name": "qwq",
+                    "patient_id": 1,
+                    "patient": {
+                      "id": 1,
+                      "name": "ooo",
+                      "age": 89,
+                      "gender": "male",
+                      "otc_reports": null,
+                      "doctors": null
+                    },
+                    "reportDate": "2025-02-22T15:08:20.635938Z",
+                    "prediction": {
+                      "id": 0,
+                      "otc_report_id": 0,
+                      "otc_report": null,
+                      "probability": "",
+                      "advice": "",
+                      "final": 0,
+                      "lr": 0,
+                      "svm": 0,
+                      "dt": 0
+                    },
+                    "otc_image_status": 0,
+                    "report_status": 0,
+                    "file_name": ""
+                  },
+                  {
+                    "id": 2,
+                    "patient_name": "ooo",
+                    "doctor_name": "qwq",
+                    "patient_id": 1,
+                    "patient": {
+                      "id": 1,
+                      "name": "ooo",
+                      "age": 89,
+                      "gender": "male",
+                      "otc_reports": null,
+                      "doctors": null
+                    },
+                    "reportDate": "2025-02-22T16:05:55.375147Z",
+                    "prediction": {
+                      "id": 0,
+                      "otc_report_id": 0,
+                      "otc_report": null,
+                      "probability": "",
+                      "advice": "",
+                      "final": 0,
+                      "lr": 0,
+                      "svm": 0,
+                      "dt": 0
+                    },
+                    "otc_image_status": 0,
+                    "report_status": 0,
+                    "file_name": ""
+                  },
+                  {
+                    "id": 9,
+                    "patient_name": "ooo",
+                    "doctor_name": "qwq",
+                    "patient_id": 1,
+                    "patient": {
+                      "id": 1,
+                      "name": "ooo",
+                      "age": 89,
+                      "gender": "male",
+                      "otc_reports": null,
+                      "doctors": null
+                    },
+                    "reportDate": "2025-02-24T15:11:56.601066Z",
+                    "prediction": {
+                      "id": 0,
+                      "otc_report_id": 0,
+                      "otc_report": null,
+                      "probability": "",
+                      "advice": "",
+                      "final": 0,
+                      "lr": 0,
+                      "svm": 0,
+                      "dt": 0
+                    },
+                    "otc_image_status": 0,
+                    "report_status": 0,
+                    "file_name": ""
+                  },
+                  {
+                    "id": 11,
+                    "patient_name": "ooo",
+                    "doctor_name": "qwq",
+                    "patient_id": 1,
+                    "patient": {
+                      "id": 1,
+                      "name": "ooo",
+                      "age": 89,
+                      "gender": "male",
+                      "otc_reports": null,
+                      "doctors": null
+                    },
+                    "reportDate": "2025-02-24T15:47:58.885869Z",
+                    "prediction": {
+                      "id": 0,
+                      "otc_report_id": 0,
+                      "otc_report": null,
+                      "probability": "",
+                      "advice": "",
+                      "final": 0,
+                      "lr": 0,
+                      "svm": 0,
+                      "dt": 0
+                    },
+                    "otc_image_status": 0,
+                    "report_status": 0,
+                    "file_name": ""
+                  }
+                ]
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/GetImage/{imageName}/": {
+      "get": {
+        "summary": "/GetImage/{imageName}/",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "imageName",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "required": [
+                    "01JS18JMZVCXKX4KBMTV8JS7Y8"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {}
+  },
+  "servers": [],
+  "security": []
+}
